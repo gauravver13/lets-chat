@@ -1,13 +1,22 @@
-import WebSocket from 'ws';
+import { WebSocketServer } from "ws";
 
-const ws = new WebSocket('ws://localhost:8080');
+const wss = new WebSocketServer({ port: 8080 });
 
-ws.on('error', console.error);
+let userCount = 0;
+let allSockets = [];
 
-ws.on('open', function open() {
-  ws.send('something');
-});
+wss.on("connection", (socket) => {
+  allSockets.push(socket);
 
-ws.on('message', function message(data) {
-  console.log('received: %s', data);
-});
+  userCount = userCount+1;
+  console.log("User Connected #"+userCount);
+
+      socket.on("message", (message) => {
+        console.log('Message Received from user #'+userCount+":: "+message.toString());
+        for(let i=0; i<allSockets.length; i++) {
+          const s = allSockets[i];
+          s.send(message.toString()+':: Sent from the server #'+ userCount);
+        }
+
+      })
+})
