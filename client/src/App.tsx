@@ -5,6 +5,7 @@ export default function App() {
 
   const [messages, setMessages] = useState(["hi there", "hello"]);
   const wsRef = useRef("");
+  const inputRef = useRef("")
   
   useEffect((() => {
     const ws = new WebSocket("http://localhost:8080");
@@ -25,7 +26,7 @@ export default function App() {
       //   type: "join",
       //   payload: {
       //     roomId: "red"
-      //   }
+      //    }
       // })
   }),[])
   return (
@@ -35,11 +36,15 @@ export default function App() {
           className="bg-green-300 rounded p-2 m-1 text-white w-1/2"> {message} </div>)}
         </div>
         <div className="bg-yellow-100 h-[10vh]">
-          <input id="message" type="text" className="mt-1 w-full p-3 text-red-600 flex">
+          {/* <input id="message" type="text" className="mt-1 w-full p-3 text-red-600 flex">
+          </input> */}
+          <input ref={inputRef}
+           id="message" type="text" className="mt-1 w-full p-3 text-red-600 flex">
           </input>
           <button className="w-full rounded-md bg-purple-500 p-4"
           onClick={() => {
-            const message = document.getElementById("message")?.value;
+            // const message = document.getElementById("message")?.value;
+            const message = inputRef.current?.value;
             wsRef.current.send(JSON.stringify({
               type: "chat",
               payload: {
