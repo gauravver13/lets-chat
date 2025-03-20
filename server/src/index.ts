@@ -58,5 +58,5 @@ wss.on("connection", (socket) => {
     allSockets = allSockets.filter(x => x != socket as unknown);
   })
 
-      
+  socket.
 })
